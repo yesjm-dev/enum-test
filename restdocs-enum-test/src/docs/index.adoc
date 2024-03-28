@@ -1,0 +1,12 @@
+= RESTDOCS ENUM Document
+:doctype: book
+:icon: font
+:source-highlighter: highlighjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+:docinfo: shared-head
+
+== enum 조회해보기
+
+operation::getCustomers[snippets='http-request,query-parameters,http-response']

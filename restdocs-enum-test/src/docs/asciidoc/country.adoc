@@ -1,0 +1,2 @@
+[[country]]
+include::{snippets}/enum/custom-response-fields-country.adoc[]

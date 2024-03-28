@@ -19,11 +19,12 @@ repositories {
     mavenCentral()
 }
 
-extra["snippetsDir"] = file("build/generated-snippets")
-
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    testImplementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 }
@@ -35,15 +36,31 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-tasks.withType<Test> {
-    useJUnitPlatform()
+val snippetsDir: File = file("build/generated-snippets")
+
+tasks {
+    test {
+        outputs.dir(snippetsDir)
+        useJUnitPlatform()
+        jvmArgs("-XX:+EnableDynamicAgentLoading")
+    }
+
+    asciidoctor {
+        inputs.dir(snippetsDir)
+        configurations("asciidoctorExt")
+        baseDirFollowsSourceFile()
+        dependsOn("test")
+    }
+
+    bootJar {
+        dependsOn("asciidoctor")
+        from("build/docs/asciidoc") {
+            into("static/docs")
+        }
+    }
+
+    jar {
+        enabled = false
+    }
 }
 
-tasks.test {
-    outputs.dir(project.extra["snippetsDir"]!!)
-}
-
-tasks.asciidoctor {
-    inputs.dir(project.extra["snippetsDir"]!!)
-    dependsOn(tasks.test)
-}
