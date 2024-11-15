@@ -1,6 +1,7 @@
 package org.example.restdocsenumtest
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.example.restdocsenumtest.docs.DocsEnumType
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -39,5 +40,22 @@ class BaseRestDocsTest {
                 .alwaysDo<DefaultMockMvcBuilder>(MockMvcResultHandlers.print())
                 .addFilters<DefaultMockMvcBuilder>(CharacterEncodingFilter("UTF-8", true))
                 .build()
+    }
+
+    fun <T> generateEnumValues(
+        clazz: Class<T>,
+    ): String where T : Enum<T>, T : DocsEnumType {
+        val sb = StringBuilder()
+
+        sb.append("\n")
+        sb.append(clazz.simpleName)
+        sb.append("\n")
+
+        for (enumValue in clazz.enumConstants) {
+            sb.append("${enumValue.name} : ${enumValue.description()}\n")
+            sb.append("\n")
+        }
+
+        return sb.trimEnd().toString()
     }
 }

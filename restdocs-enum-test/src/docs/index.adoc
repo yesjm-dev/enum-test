@@ -6,7 +6,14 @@
 :toclevels: 3
 :sectlinks:
 :docinfo: shared-head
+:docinfo: shared
+:http-get: pass:quotes[[.http.get]#GET#]
+:http-patch: pass:quotes[[.http.patch]#PATCH#]
+:http-post: pass:quotes[[.http.post]#POST#]
+:http-put: pass:quotes[[.http.put]#PUT#]
+:http-delete: pass:quotes[[.http.delete]#DELETE#]
 
-== enum 조회해보기
+== {http-GET} enum 조회
 
-operation::getCustomers[snippets='http-request,query-parameters,http-response']
+operation::getCustomers[snippets='exception,http-request,query-parameters,http-response']
+

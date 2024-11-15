@@ -2,8 +2,8 @@ package org.example.restdocsenumtest.country
 
 import org.example.restdocsenumtest.BaseRestDocsTest
 import org.example.restdocsenumtest.docs.Country
-import org.example.restdocsenumtest.docs.DocUrl
-import org.example.restdocsenumtest.docs.EnumLinkGenerator
+import org.example.restdocsenumtest.docs.ExceptionSnippet
+import org.example.restdocsenumtest.exception.CountryNotFoundException
 import org.junit.jupiter.api.Test
 import org.springframework.http.MediaType
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document
@@ -31,8 +31,9 @@ class CountryRestControllerTest : BaseRestDocsTest() {
                     preprocessRequest(Preprocessors.prettyPrint()),
                     preprocessResponse(Preprocessors.prettyPrint()),
                     queryParameters(
-                        parameterWithName("country").description(EnumLinkGenerator.link(DocUrl.COUNTRY)),
+                        parameterWithName("country").description(generateEnumValues(Country::class.java)),
                     ),
+                    ExceptionSnippet(listOf(CountryNotFoundException()))
                 ),
             )
     }
